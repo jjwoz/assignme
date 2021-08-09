@@ -1,0 +1,16 @@
+version: '3.9'
+services:
+  db:
+    image: mysql:5.7 # use latest official postgres version
+    restart: always
+    environment:
+      - MYSQL_DATABASE=assign
+      - MYSQL_USER=test
+      - MYSQL_PASSWORD=password123
+      - MYSQL_ROOT_PASSWORD=password123
+    ports:
+      - 3306:3306
+    volumes:
+      - assign-me:/var/lib/mysql
+volumes:
+  assign-me:
