@@ -12,11 +12,25 @@ import (
 
 const (
 	insertTicket     = "INSERT INTO tickets(subject, content, html, status_id, priority_id, user_id, agent_id, category_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?);"
-	selectAllTickets = `select t.id, t.subject, t.content, t.html, ts.name, tp.name, u.name as asignee, u.name as creator,tcc.name, t.created_at, t.completed_at
-from tickets t join ticket_statuses ts on t.status_id = ts.id
-join ticket_categories tcc on tcc.id = t.category_id
-join ticket_priorities tp on tp.id = t.priority_id
-join users u on t.creator_id = u.id;`
+	selectAllTickets = `select t.id,
+       t.subject,
+       t.content,
+       u1.photo_url as creator_photo_url,
+       u2.photo_url as assignee_photo_url,
+       t.html,
+       ts.name,
+       tp.name,
+       u2.name      as asignee,
+       u1.name      as creator,
+       tcc.name,
+       t.created_at,
+       t.completed_at
+from tickets t
+         join ticket_statuses ts on t.status_id = ts.id
+         join ticket_categories tcc on tcc.id = t.category_id
+         join ticket_priorities tp on tp.id = t.priority_id
+         join users u1 on t.creator_id = u1.id
+         left join users u2 on t.assignee_id = u2.id;`
 	updateTicket = "UPDATE tickets SET  subject=?, content=?, html=?, status_id=?, priority_id=?, assignee_id=?, category_id=?, updated_at=NOW(), completed_at=? WHERE id = ?;"
 )
 
@@ -100,8 +114,8 @@ func main() {
 		//join ticket_priorities tp on tp.id = t.priority_id
 		//join users u on t.creator_id = u.id;
 		for rows.Next() {
-			t := tickets.TicketResponse{}
-			if err := rows.Scan(&t.ID, &t.Subject, &t.Content, &t.Html, &t.Status, &t.Priority, &t.Assignee, &t.Creator, &t.Category, &t.CreatedAt, &t.CompletedAt); err != nil {
+			t := dto.TicketResponse{}
+			if err := rows.Scan(&t.ID, &t.Subject, &t.Content, &t.CreatorPhotoUrl, &t.AssigneePhotoUrl, &t.Html, &t.Status, &t.Priority, &t.Assignee, &t.Creator, &t.Category, &t.CreatedAt, &t.CompletedAt); err != nil {
 				return err
 			}
 

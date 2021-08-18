@@ -27,17 +27,19 @@ type Tickets struct {
 }
 
 type TicketResponse struct {
-	ID          int      `json:"id"`
-	Subject     *string  `json:"subject"`
-	Content     *string  `json:"content"`
-	Html        *string  `json:"html,omitempty"`
-	Status      string   `json:"status"`
-	Priority    string   `json:"priority"`
-	Assignee    *string  `json:"assignee,omitempty"`
-	Creator     string   `json:"creator"`
-	Category    string   `json:"category"`
-	CreatedAt   NullTime `json:"createdAt,omitempty"`
-	CompletedAt NullTime `json:"completedAt,omitempty"`
+	ID               int      `json:"id"`
+	Subject          *string  `json:"subject"`
+	Content          *string  `json:"content"`
+	Html             *string  `json:"html,omitempty"`
+	Status           string   `json:"status"`
+	Priority         string   `json:"priority"`
+	Assignee         *string  `json:"assignee,omitempty"`
+	Creator          string   `json:"creator"`
+	Category         string   `json:"category"`
+	CreatorPhotoUrl  string   `json:"creatorPhotoUrl,omitempty"`
+	AssigneePhotoUrl *string  `json:"assigneePhotoUrl,omitempty"`
+	CreatedAt        NullTime `json:"createdAt,omitempty"`
+	CompletedAt      NullTime `json:"completedAt,omitempty"`
 }
 
 func (nt *NullTime) Scan(value interface{}) error {
